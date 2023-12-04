@@ -108,6 +108,7 @@ void block_card(struct player_cards *ptr_to_player_cards, struct bot_cards *ptr_
 }
 int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player_cards *ptr_to_player_cards, struct bot_cards *ptr_to_bot_cards, int player_element, struct player_spells *ptr_to_player_spells)
 {
+    printf("player turn:");
     int i, type;
     int who = 1;
     if (ptr_to_player->mana < 10)
@@ -124,7 +125,8 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
         // {
         //     printf(" hola %s" , ((ptr_to_player_spells + i)->name));
         // }
-        printf(" hola %s", ((ptr_to_player_spells + i)->name));
+        type--;
+        printf(" hola %s", ((ptr_to_player_spells+type)->name));
 
         scanf("%d", &i);
         i--;
@@ -134,9 +136,9 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
     {
         do
         {
-            // Add the printf statements to show cards
+            // Add the printf statements to show cards                                                                                                                                                                                          (ptr_to_player_cards)->manacost   (ptr_to_player_cards)->damage                                                            
             //  printf("%d , %d \n" , ptr_to_bot->health , ptr_to_player ->mana);
-            printf("select the attack card u want to choose\n1.%s\n2.%s\n3.%s\n4.%s\n", ptr_to_bot_cards->name, (ptr_to_bot_cards + 1)->name, (ptr_to_bot_cards + 2)->name, (ptr_to_bot_cards + 3)->name);
+            printf("select the attack card u want to choose\n1.%s(mana cost=%d)(damage:%d)\n2.%s(mana cost=%d)(damage:%d)\n3.%s(mana cost=%d)(damage:%d)\n4.%s(mana cost=%d)(damage:%d)\n", (ptr_to_player_cards)->name,(ptr_to_player_cards)->manacost,(ptr_to_player_cards)->damage, (ptr_to_player_cards + 1)->name,(ptr_to_player_cards+1)->manacost,(ptr_to_player_cards+1)->damage,(ptr_to_player_cards + 2)->name,(ptr_to_player_cards+2)->manacost,(ptr_to_player_cards+2)->damage,(ptr_to_player_cards + 3)->name,(ptr_to_player_cards+3)->manacost,(ptr_to_player_cards+3)->damage);
             scanf("%d", &i);
             i--;
             if (i < 0 && i > 3)
@@ -169,8 +171,8 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
         ptr_to_bot->health = ptr_to_bot->health - (ptr_to_player_cards + i)->damage;
         ptr_to_player->mana = ptr_to_player->mana - (ptr_to_player_cards + i)->manacost;
     }
-    printf("remaining  bot health : %d\n", ptr_to_bot->health);
-    printf("how much mana is left for the  : %d\n", ptr_to_player->mana);
+    printf("you inflicted a damage of :%d\nremaining bot health : %d\n", 100-ptr_to_bot->health,ptr_to_bot->health);
+    printf("how much mana is left for you  : %d\n", ptr_to_player->mana);
 
     if (ptr_to_bot->health < 1)
     {
@@ -188,6 +190,7 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
 }
 int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player_cards *ptr_to_player_cards, struct bot_cards *ptr_to_bot_cards, int bot_element, struct bot_spells *ptr_to_bot_spells)
 {
+    printf("bots turn:");
     int i, type;
     int who = 2;
     if (ptr_to_bot->mana < 10)
@@ -210,7 +213,7 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
         {
             // Add the printf statements to show cards
             //  printf("%d , %d \n" , ptr_to_bot->health , ptr_to_player ->mana);
-            printf("select the card u want to choose");
+            printf("select the attack card u want to choose\n1.%s(mana cost=%d)(damage:%d)\n2.%s(mana cost=%d)(damage:%d)\n3.%s(mana cost=%d)(damage:%d)\n4.%s(mana cost=%d)(damage:%d)\n", (ptr_to_bot_cards)->name,(ptr_to_bot_cards)->manacost,(ptr_to_bot_cards)->damage, (ptr_to_bot_cards + 1)->name,(ptr_to_bot_cards+1)->manacost,(ptr_to_bot_cards+1)->damage,(ptr_to_bot_cards + 2)->name,(ptr_to_bot_cards+2)->manacost,(ptr_to_bot_cards+2)->damage,(ptr_to_bot_cards + 3)->name,(ptr_to_bot_cards+3)->manacost,(ptr_to_bot_cards+3)->damage);
             scanf("%d", &i);
             i--;
             if (i < 0 && i > 3)
@@ -223,7 +226,6 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
                 printf("this card is blocked for this turn");
                 continue;
             }
-
             if (ptr_to_bot->mana < (ptr_to_bot_cards + i)->manacost)
             {
                 printf("your mana is not enough choose another card\n");
@@ -243,8 +245,8 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
         ptr_to_player->health = ptr_to_player->health - (ptr_to_bot_cards + i)->damage;
         ptr_to_bot->mana = ptr_to_bot->mana - (ptr_to_bot_cards + i)->manacost;
     }
-    printf("remaining  player health : %d\n", ptr_to_player->health);
-    printf("how much mana is left for the bot  : %d\n", ptr_to_bot->mana);
+    printf("the monster inflicted %d damage\nremaining player health : %d\n",100-ptr_to_player->health,ptr_to_player->health);
+    printf("monster has %d mana left\n",ptr_to_bot->mana);
 
     if (ptr_to_player->health < 1)
     {
@@ -455,6 +457,13 @@ void level3()
         printf("Asta: Your threats mean nothing to me, specter. Time for a showdown!\n");
     }
 }
+void finalLevel() {
+    printf("After overcoming numerous trials and defeating formidable foes, you've finally collected the 2 Infinity Stones and 2 Forbidden Spell Cards.\n");
+    printf("With a sense of accomplishment, you make your way back to Master Fushiguiro.\n");
+    printf("Upon reaching the Master's quarters, a horrifying sight greets you. Master Fushiguiro has been secretly murdered!\n");
+    printf("The room is in chaos, and the aura of the perpetrator still lingers in the air. You clench your fists, vowing to avenge your Master.\n");
+    printf("To be continued in Semester 2...\n");
+}
 int main()
 {
     int i = 0; // this is not part of the code will be removed
@@ -475,7 +484,6 @@ int main()
     scanf("%d", &player_element);
     player_element -= 1;
     bot_element = rand() % 4;
-    level1();
     // give the player its cards
     // struct player_cards player_card_s[4];
     struct player_cards *ptr_to_player_cards = (struct player_cards *)calloc(4, sizeof(struct player_cards));
@@ -497,88 +505,140 @@ int main()
     struct bot *ptr_to_bot = &b1;
     b1.mana = 100;
     b1.health = 100;
-    i = 0;
-
-    while (i == 0) // set the winning conditions here
+     i = 0;
+    int points;
+    level1();
+while (i == 0) // set the winning conditions here
+{
+    i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+    if (i == 1)
     {
-        i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-        if (i == 1)
-        {
-            int points = 100;
-            upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
-            level2();
-            while (i == 0) // set the winning conditions here
-            {
-                i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-                if (i == 1)
-                {
-
-                    break;
-                }
-                i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-                if (i == 1)
-                {
-                    break;
-                }
-            }
-            level3();
-            while (i == 0) // set the winning conditions here
-            {
-                i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-                if (i == 1)
-                {
-                    int points = 100;
-                    upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
-                    ;
-                    break;
-                }
-                i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-                if (i == 1)
-                {
-                    break;
-                }
-            }
-            break;
-        }
-        i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-        if (i == 1)
-        {
-            break;
-        }
+        int points = 100; // Assuming you want to start with 100 points
+        upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
+        level2();
+        break;
     }
+    i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+    if (i == 1)
+    {
+        break;
+    }
+}
+i=0;
+while (i == 0) // set the winning conditions here
+{
+    i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+    if (i == 1)
+    {
+        int points = 100; // Assuming you want to start with 100 points
+        upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
+        level3();
+        break;
+    }
+    i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+    if (i == 1)
+    {
+        break;
+    }
+}
+i=0;
+while (i == 0) // set the winning conditions here
+{
+    i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+    if (i == 1)
+    {
+        finalLevel();
+        break;
+    }
+    i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+    if (i == 1)
+    {
+        break;
+    }
+}
 
-    // while (i == 0) // set the winning conditions here
-    // {
-    //     i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-    //     if (i == 1)
-    //     {
+   
+//     while (i == 0) // set the winning conditions here
+//     {
+//         i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+//         if (i == 1)
+//         {
+//             int points = 100;
+//             upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
+//             level2();
+//             while (i == 0) // set the winning conditions here
+//             {
+//                 i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+//                 if (i == 1)
+//                 {
 
-    //         break;
-    //     }
-    //     i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-    //     if (i == 1)
-    //     {
-    //         break;
-    //     }
-    // }
-    // level3();
-    // while (i == 0) // set the winning conditions here
-    // {
-    //     i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-    //     if (i == 1)
-    //     {
-    //         int points = 100;
-    //         upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);;
-    //         break;
-    //     }
-    //     i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-    //     if (i == 1)
-    //     {
-    //         break;
-    //     }
-    // }
+//                     break;
+//                 }
+//                 i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+//                 if (i == 1)
+//                 {
+//                     break;
+//                 }
+//             }
+//             level3();
+//             while (i == 0) // set the winning conditions here
+//             {
+//                 i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+//                 if (i == 1)
+//                 {
+//                     int points = 100;
+//                     upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
+//                     ;
+//                     break;
+//                 }
+//                 i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+//                 if (i == 1)
+//                 {
+//                     break;
+//                 }
+//             }
+//             break;
+//         }
+//         i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+//         if (i == 1)
+//         {
+//             break;
+//         }
+//     }
 
-    free(ptr_to_all_cards);
-    free(ptr_to_player_cards);
-    free(ptr_to_bot_cards);
+//     // while (i == 0) // set the winning conditions here
+//     // {
+//     //     i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+//     //     if (i == 1)
+//     //     {
+
+//     //         break;
+//     //     }
+//     //     i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+//     //     if (i == 1)
+//     //     {
+//     //         break;
+//     //     }
+//     // }
+//     // level3();
+//     // while (i == 0) // set the winning conditions here
+//     // {
+//     //     i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+//     //     if (i == 1)
+//     //     {
+//     //         int points = 100;
+//     //         upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);;
+//     //         break;
+//     //     }
+//     //     i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+//     //     if (i == 1)
+//     //     {
+//     //         break;
+//     //     }
+//     // }
+
+//     free(ptr_to_all_cards);
+//     free(ptr_to_player_cards);
+//     free(ptr_to_bot_cards);
+// }
 }
