@@ -2,42 +2,89 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//ayaan chomu
-struct cards
-{
+
+struct cards {
     char element[10];
     int damage;
     int manacost;
     int isblocked;
     char name[30];
 };
-struct player_cards
-{
+
+struct player_cards {
     char element[10];
     int damage;
     int manacost;
     int isblocked;
     char name[30];
 };
-struct bot_cards
-{
+
+struct bot_cards {
     char element[10];
     int damage;
     int manacost;
     int isblocked;
     char name[30];
 };
-struct player
-{
-    int mana;
-    int health;
-};
-struct bot
-{
+
+struct player {
     int mana;
     int health;
 };
 
+struct bot {
+    int mana;
+    int health;
+};
+
+typedef void (*ptr_to_spells)(struct player_cards *, struct bot_cards *, struct bot *, struct player *, int);
+
+void print_card_info(struct cards *card) {
+    printf("Card: %s\n", card->name);
+    printf("Element: %s\n", card->element);
+    printf("Damage: %d\n", card->damage);
+    printf("Mana Cost: %d\n", card->manacost);
+}
+
+void print_battle_status(struct player *player, struct bot *bot) {
+    printf("\n--- Battle Status ---\n");
+    printf("Your Health: %d | Your Mana: %d\n", player->health, player->mana);
+    printf("Bot's Health: %d | Bot's Mana: %d\n", bot->health, bot->mana);
+}
+
+void print_story_intro() {
+    printf("You opened your eyes, stood up from the ground, and found yourself in an ominous dark forest.\n");
+    printf("In front of you lies a mysterious cave, and the dense forest surrounds you.\n");
+    printf("What choice will you make?\n");
+}
+
+void print_monster_appearance() {
+    printf("\nAs you enter the cave, you encounter a fierce monster!\n");
+    printf("But wait... It's not just any monster. It's a powerful bot!\n");
+    printf("Get ready for a card battle!\n");
+}
+
+void print_player_choice(int type) {
+    if (type == 1) {
+        printf("\nYou choose to attack! Select a card:\n");
+    } else if (type == 2) {
+        printf("\nYou choose to cast a spell! Select a spell card:\n");
+    }
+}
+
+void print_card_battle(struct player_cards *player_card, struct bot_cards *bot_card) {
+    printf("\n--- Card Battle ---\n");
+    printf("Your card: %s vs. Bot's card: %s\n", player_card->name, bot_card->name);
+    printf("Your card deals %d damage. Bot's card deals %d damage.\n", player_card->damage, bot_card->damage);
+}
+
+void print_win_message(int player_wins) {
+    if (player_wins) {
+        printf("\nCongratulations! You have defeated the bot and emerged victorious!\n");
+    } else {
+        printf("\nOh no! The bot has overwhelmed you. Better luck next time!\n");
+    }
+}
 typedef void (*ptr_to_spells)(struct player_cards *, struct bot_cards *, struct bot *, struct player *, int);
 
 void health_steal(struct player_cards *ptr_to_player_cards, struct bot_cards *ptr_to_bot_cards, struct bot *ptr_to_bot, struct player *ptr_to_player, int who)
@@ -98,49 +145,43 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
     int who = 1;
     if (ptr_to_player->mana < 10)
     {
-        printf("Bot won the match\n");
-        return 1;  // Return 1 to indicate that the player has lost
+        printf("bot won the match");
+        return 1;
     }
-
-    printf("Your mana: %d\n", ptr_to_player->mana);
-    printf("Your health: %d\n", ptr_to_bot->health);
-
-    printf("Which type of card do you want to choose?\n1-Attack Card\n2-Spell Card\n");
+    printf("which type of card do u want to choose\n1-Attack Card \n2-SpellCard");
     scanf("%d", &type);
-
     if (type == 2)
     {
-        printf("Choose the spell card you want to use:\n");
-        for (int j = 0; j < 4; j++)
-        {
-            printf("%d. %s\n", j + 1, ((ptr_to_player_spells + i)->name);
-        }
+        printf("choose the spell card u want to use");
         scanf("%d", &i);
         i--;
         player_spells[i](ptr_to_player_cards, ptr_to_bot_cards, ptr_to_bot, ptr_to_player, who);
     }
-    else if (type == 1)
+    if (type == 1)
     {
-        display_player_cards(ptr_to_player_cards);
         do
         {
-            printf("Select the card you want to use:\n");
+            // Add the printf statements to show cards
+            //  printf("%d , %d \n" , ptr_to_bot->health , ptr_to_player ->mana);
+            printf("select the card u want to choose");
             scanf("%d", &i);
             i--;
-            if (i < 0 || i >= 4)
+            if (i < 0 && i > 3)
             {
-                printf("Invalid move, try again\n");
+                printf("invalid move , try again");
                 continue;
             }
             if ((ptr_to_player_cards + i)->isblocked == 1)
             {
-                printf("This card is blocked for this turn\n");
+                printf("this card is blocked for this turn");
                 continue;
             }
+
             if (ptr_to_player->mana < (ptr_to_player_cards + i)->manacost)
             {
-                printf("Your mana is not enough, choose another card\n");
+                printf("your mana is not enough choose another card");
                 continue;
+                // return player_turn(ptr_to_player , ptr_to_bot , ptr_to_player_cards , ptr_to_bot_cards , player_element);
             }
             else
             {
@@ -148,34 +189,30 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
             }
         } while (i < 5);
 
-        if (i == player_element)
+        if (i == player_element) // fix this code
         {
             (ptr_to_player_cards + i)->damage += (0.1 * (ptr_to_player_cards + i)->damage);
         }
-
-        printf("Using %s - Damage: %d, Mana Cost: %d\n", (ptr_to_player_cards + i)->name, (ptr_to_player_cards + i)->damage, (ptr_to_player_cards + i)->manacost);
-
-        ptr_to_bot->health -= (ptr_to_player_cards + i)->damage;
-        ptr_to_player->mana -= (ptr_to_player_cards + i)->manacost;
+        ptr_to_bot->health = ptr_to_bot->health - (ptr_to_player_cards + i)->damage;
+        ptr_to_player->mana = ptr_to_player->mana - (ptr_to_player_cards + i)->manacost;
     }
-
-    printf("Remaining bot health: %d\n", ptr_to_bot->health);
-    printf("Remaining mana for you: %d\n", ptr_to_player->mana);
+    printf("remaining  bot health : %d\n", ptr_to_bot->health);
+    printf("how much mana is left for the  : %d\n", ptr_to_player->mana);
 
     if (ptr_to_bot->health < 1)
     {
-        printf("Congratulations! You have won the match\n");
-        return 1;  // Return 1 to indicate that the player has won
+        printf("congrats u have won the match");
+        return 1;
     }
-
+    else
+    {
+        return 0;
+    }
     for (i = 0; i < 4; i++)
     {
         (ptr_to_player_cards + i)->isblocked = 0;
     }
-
-    return 0;  // Return 0 to indicate that the game is ongoing
 }
-
 int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player_cards *ptr_to_player_cards, struct bot_cards *ptr_to_bot_cards, int bot_element, ptr_to_spells *bot_spells)
 {
     int i, type;
@@ -315,15 +352,6 @@ void card_making(struct cards *ptr_to_all_cards)
         }
     }
 }
-void display_player_cards(struct player_cards *ptr_to_player_cards)
-{
-    printf("Your cards:\n");
-    for (int i = 0; i < 4; i++)
-    {
-        printf("%d. %s\n", i + 1, (ptr_to_player_cards + i)->name);
-    }
-}
-
 void upgrade_attributes(struct player *ptr_to_player, struct player_cards *ptr_to_player_cards, int points)
 {
     int choice, upgrade_amount, card_index;
@@ -377,33 +405,27 @@ void upgrade_attributes(struct player *ptr_to_player, struct player_cards *ptr_t
     }
 }
 
-struct spell_card_info
-{
-    char name[30];
-};
 
-int main()
-{
-    int gameResult = 0;
+int main() {
     srand(time(NULL));
 
     struct cards *ptr_to_all_cards = (struct cards *)calloc(12, sizeof(struct cards));
+    struct cards card_s[12];
     card_making(ptr_to_all_cards);
-
     ptr_to_spells spell_cards[4] = {health_steal, mana_steal, heal, block_card};
-    struct spell_card_info spell_card_info[4] = {{"Health Steal"}, {"Mana Steal"}, {"Heal"}, {"Block Card"}};
-
     char elements[4][10] = {"earth", "water", "fire", "air"};
     int player_element, bot_element;
-    printf("Choose your main element\n1-Earth\n2-Water\n3-Fire\n4-Air ");
+    printf("Choose your main element\n1-Earth\n2-Water\n3-Fire\n4-Air: ");
     scanf("%d", &player_element);
     player_element -= 1;
     bot_element = rand() % 4;
 
+    struct player_cards player_card_s[4];
     struct player_cards *ptr_to_player_cards = (struct player_cards *)calloc(4, sizeof(struct player_cards));
     ptr_to_spells *player_spells = (ptr_to_spells *)calloc(1, sizeof(ptr_to_spells));
     player_cards_assigning(ptr_to_all_cards, ptr_to_player_cards, elements, player_element, player_spells, spell_cards);
 
+    struct bot_cards bot_card_s[4];
     struct bot_cards *ptr_to_bot_cards = (struct bot_cards *)calloc(4, sizeof(struct bot_cards));
     ptr_to_spells *bot_spells = (ptr_to_spells *)calloc(1, sizeof(ptr_to_spells));
     bot_cards_assigning(ptr_to_all_cards, ptr_to_bot_cards, elements, bot_element, bot_spells, spell_cards);
@@ -412,26 +434,43 @@ int main()
     struct player *ptr_to_player = &p1;
     p1.mana = 100;
     p1.health = 100;
+
     struct bot b1;
     struct bot *ptr_to_bot = &b1;
     b1.mana = 100;
     b1.health = 100;
 
-    while (gameResult == 0)
-    {
-        gameResult = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, player_spells, spell_card_info);
-        if (gameResult == 1)
-        {
-            int points = 100;
-            upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
+    // Print the introductory story
+    print_story_intro();
+
+    // Game loop
+    while (1) {
+        // Player's turn
+        print_monster_appearance();
+        int player_choice;
+        printf("\nChoose your action:\n1-Enter the cave\n2-Explore the forest\n");
+        scanf("%d", &player_choice);
+
+        if (player_choice == 1) {
+            // Player entered the cave
+            // Perform card battle
+            int player_wins = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, player_spells);
+            print_win_message(player_wins);
             break;
+        } else if (player_choice == 2) {
+            // Player explores the forest
+            // Add additional storyline or events for forest exploration
+            printf("\nYou decided to explore the forest. Nothing significant happens for now...\n");
+        } else {
+            // Invalid choice
+            printf("\nInvalid choice. Try again.\n");
         }
 
-        gameResult = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, bot_spells);
-        if (gameResult == 1)
-        {
-            break;
-        }
+        // Bot's turn
+        // Perform card battle
+        int bot_wins = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, bot_spells);
+        print_win_message(!bot_wins); // Invert the result for the bot
+        break;
     }
 
     // Free allocated memory

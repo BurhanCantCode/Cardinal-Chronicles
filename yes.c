@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h>//burhan ke ppas nhi hai
+#include <stdlib.h>//hola soy dora
 #include <string.h>
 #include <time.h>
-//ayaan chomu
+
 struct cards
 {
     char element[10];
@@ -98,48 +98,41 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
     int who = 1;
     if (ptr_to_player->mana < 10)
     {
-        printf("Bot won the match\n");
-        return 1;  // Return 1 to indicate that the player has lost
+        printf("bot won the match");
+        return 1;
     }
-
-    printf("Your mana: %d\n", ptr_to_player->mana);
-    printf("Your health: %d\n", ptr_to_bot->health);
-
-    printf("Which type of card do you want to choose?\n1-Attack Card\n2-Spell Card\n");
+    printf("which type of card do u want to choose\n1-Attack Card \n2-SpellCard");
     scanf("%d", &type);
-
     if (type == 2)
     {
-        printf("Choose the spell card you want to use:\n");
-        for (int j = 0; j < 4; j++)
-        {
-            printf("%d. %s\n", j + 1, ((ptr_to_player_spells + i)->name);
-        }
+        printf("choose the spell card u want to use");
         scanf("%d", &i);
         i--;
         player_spells[i](ptr_to_player_cards, ptr_to_bot_cards, ptr_to_bot, ptr_to_player, who);
     }
-    else if (type == 1)
+    if (type == 1)
     {
-        display_player_cards(ptr_to_player_cards);
         do
         {
-            printf("Select the card you want to use:\n");
+            // Add the printf statements to show cards
+            //  printf("%d , %d \n" , ptr_to_bot->health , ptr_to_player ->mana);
+            printf("select the attack card u want to choose\n1.%s\n2.%s\n3.%s\n4.%s\n",ptr_to_player_cards->name,(ptr_to_player_cards+1)->name,(ptr_to_player_cards+2)->name,(ptr_to_player_cards+3)->name);
             scanf("%d", &i);
             i--;
-            if (i < 0 || i >= 4)
+            if (i < 0 && i > 3)
             {
-                printf("Invalid move, try again\n");
+                printf("invalid move , try again");
                 continue;
             }
             if ((ptr_to_player_cards + i)->isblocked == 1)
             {
-                printf("This card is blocked for this turn\n");
+                printf("this card is blocked for this turn");
                 continue;
             }
+
             if (ptr_to_player->mana < (ptr_to_player_cards + i)->manacost)
             {
-                printf("Your mana is not enough, choose another card\n");
+                printf("your mana is not enough choose another card");
                 continue;
             }
             else
@@ -148,34 +141,30 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
             }
         } while (i < 5);
 
-        if (i == player_element)
+        if (i == player_element) // fix this code
         {
             (ptr_to_player_cards + i)->damage += (0.1 * (ptr_to_player_cards + i)->damage);
         }
-
-        printf("Using %s - Damage: %d, Mana Cost: %d\n", (ptr_to_player_cards + i)->name, (ptr_to_player_cards + i)->damage, (ptr_to_player_cards + i)->manacost);
-
-        ptr_to_bot->health -= (ptr_to_player_cards + i)->damage;
-        ptr_to_player->mana -= (ptr_to_player_cards + i)->manacost;
+        ptr_to_bot->health = ptr_to_bot->health - (ptr_to_player_cards + i)->damage;
+        ptr_to_player->mana = ptr_to_player->mana - (ptr_to_player_cards + i)->manacost;
     }
-
-    printf("Remaining bot health: %d\n", ptr_to_bot->health);
-    printf("Remaining mana for you: %d\n", ptr_to_player->mana);
+    printf("remaining  bot health : %d\n", ptr_to_bot->health);
+    printf("how much mana is left for the  : %d\n", ptr_to_player->mana);
 
     if (ptr_to_bot->health < 1)
     {
-        printf("Congratulations! You have won the match\n");
-        return 1;  // Return 1 to indicate that the player has won
+        printf("congrats u have won the match");
+        return 1;
     }
-
+    else
+    {
+        return 0;
+    }
     for (i = 0; i < 4; i++)
     {
         (ptr_to_player_cards + i)->isblocked = 0;
     }
-
-    return 0;  // Return 0 to indicate that the game is ongoing
 }
-
 int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player_cards *ptr_to_player_cards, struct bot_cards *ptr_to_bot_cards, int bot_element, ptr_to_spells *bot_spells)
 {
     int i, type;
@@ -185,7 +174,7 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
         printf("player won the match");
         return 1;
     }
-    printf("which type of card do u want to choose\n1-Attack Card \n2-SpellCard");
+    printf("which type of card do u want to choose\n1-Attack Card \n2-SpellCard\n");
     scanf("%d", &type);
     if (type == 2)
     {
@@ -200,7 +189,7 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
         {
             // Add the printf statements to show cards
             //  printf("%d , %d \n" , ptr_to_bot->health , ptr_to_player ->mana);
-            printf("select the card u want to choose");
+            printf("select the attack card u want to choose\n1.%s\n2.%s\n3.%s\n4.%s\n",ptr_to_bot_cards->name,(ptr_to_bot_cards+1)->name,(ptr_to_bot_cards+2)->name,(ptr_to_bot_cards+3)->name);
             scanf("%d", &i);
             i--;
             if (i < 0 && i > 3)
@@ -315,15 +304,6 @@ void card_making(struct cards *ptr_to_all_cards)
         }
     }
 }
-void display_player_cards(struct player_cards *ptr_to_player_cards)
-{
-    printf("Your cards:\n");
-    for (int i = 0; i < 4; i++)
-    {
-        printf("%d. %s\n", i + 1, (ptr_to_player_cards + i)->name);
-    }
-}
-
 void upgrade_attributes(struct player *ptr_to_player, struct player_cards *ptr_to_player_cards, int points)
 {
     int choice, upgrade_amount, card_index;
@@ -377,37 +357,37 @@ void upgrade_attributes(struct player *ptr_to_player, struct player_cards *ptr_t
     }
 }
 
-struct spell_card_info
-{
-    char name[30];
-};
-
 int main()
 {
-    int gameResult = 0;
+    int i = 0; // this is not part of the code will be removed
     srand(time(NULL));
-
+    struct cards card_s[12];
+    // yahaan pointer to structre array ko initialize kara hai
     struct cards *ptr_to_all_cards = (struct cards *)calloc(12, sizeof(struct cards));
     card_making(ptr_to_all_cards);
 
     ptr_to_spells spell_cards[4] = {health_steal, mana_steal, heal, block_card};
-    struct spell_card_info spell_card_info[4] = {{"Health Steal"}, {"Mana Steal"}, {"Heal"}, {"Block Card"}};
 
+    // this block is like the element deciding block
     char elements[4][10] = {"earth", "water", "fire", "air"};
     int player_element, bot_element;
-    printf("Choose your main element\n1-Earth\n2-Water\n3-Fire\n4-Air ");
+    printf("choose your main element\n1-Earth\n2-water\n3-Fire\n4-air\n");
     scanf("%d", &player_element);
     player_element -= 1;
     bot_element = rand() % 4;
-
+    // give the player its cards
+    struct player_cards player_card_s[4];
     struct player_cards *ptr_to_player_cards = (struct player_cards *)calloc(4, sizeof(struct player_cards));
     ptr_to_spells *player_spells = (ptr_to_spells *)calloc(1, sizeof(ptr_to_spells));
     player_cards_assigning(ptr_to_all_cards, ptr_to_player_cards, elements, player_element, player_spells, spell_cards);
 
+    // give the bot its card
+    struct bot_cards bot_card_s[4];
     struct bot_cards *ptr_to_bot_cards = (struct bot_cards *)calloc(4, sizeof(struct bot_cards));
     ptr_to_spells *bot_spells = (ptr_to_spells *)calloc(1, sizeof(ptr_to_spells));
     bot_cards_assigning(ptr_to_all_cards, ptr_to_bot_cards, elements, bot_element, bot_spells, spell_cards);
 
+    // initialize the structs for player and the bot
     struct player p1;
     struct player *ptr_to_player = &p1;
     p1.mana = 100;
@@ -416,28 +396,24 @@ int main()
     struct bot *ptr_to_bot = &b1;
     b1.mana = 100;
     b1.health = 100;
+    i = 0;
 
-    while (gameResult == 0)
+    while (i == 0) // set the winning conditions here
     {
-        gameResult = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, player_spells, spell_card_info);
-        if (gameResult == 1)
+        i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, player_spells);
+        if (i == 1)
         {
             int points = 100;
             upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
             break;
         }
-
-        gameResult = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, bot_spells);
-        if (gameResult == 1)
+        i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, bot_spells);
+        if (i == 1)
         {
             break;
         }
     }
-
-    // Free allocated memory
     free(ptr_to_all_cards);
     free(ptr_to_player_cards);
     free(ptr_to_bot_cards);
-
-    return 0;
 }
