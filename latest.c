@@ -1,5 +1,5 @@
-#include <stdio.h>  //burhan ke ppas nhi hai
-#include <stdlib.h> //hola soy dora
+#include <stdio.h>  
+#include <stdlib.h> 
 #include <string.h>
 #include <time.h>
 
@@ -121,12 +121,11 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
     if (type == 2)
     {
         printf("choose the spell card u want to use");
-        // for (i = 0; i < 1; i++)
-        // {
-        //     printf(" hola %s" , ((ptr_to_player_spells + i)->name));
-        // }
-        type--;
-        printf(" hola %s", ((ptr_to_player_spells+type)->name));
+        for (i = 0; i < 1; i++)
+        {
+            printf(" %d - %s" , i , ((ptr_to_player_spells + i)->name));
+        }
+        // printf(" hola %s", ((ptr_to_player_spells + i)->name));
 
         scanf("%d", &i);
         i--;
@@ -136,9 +135,9 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
     {
         do
         {
-            // Add the printf statements to show cards                                                                                                                                                                                          (ptr_to_player_cards)->manacost   (ptr_to_player_cards)->damage                                                            
+            // Add the printf statements to show cards                                                                                                                                                                                          (ptr_to_player_cards)->manacost   (ptr_to_player_cards)->damage
             //  printf("%d , %d \n" , ptr_to_bot->health , ptr_to_player ->mana);
-            printf("select the attack card u want to choose\n1.%s(mana cost=%d)(damage:%d)\n2.%s(mana cost=%d)(damage:%d)\n3.%s(mana cost=%d)(damage:%d)\n4.%s(mana cost=%d)(damage:%d)\n", (ptr_to_player_cards)->name,(ptr_to_player_cards)->manacost,(ptr_to_player_cards)->damage, (ptr_to_player_cards + 1)->name,(ptr_to_player_cards+1)->manacost,(ptr_to_player_cards+1)->damage,(ptr_to_player_cards + 2)->name,(ptr_to_player_cards+2)->manacost,(ptr_to_player_cards+2)->damage,(ptr_to_player_cards + 3)->name,(ptr_to_player_cards+3)->manacost,(ptr_to_player_cards+3)->damage);
+            printf("select the attack card u want to choose\n1.%s(mana cost=%d)(damage:%d)\n2.%s(mana cost=%d)(damage:%d)\n3.%s(mana cost=%d)(damage:%d)\n4.%s(mana cost=%d)(damage:%d)\n", (ptr_to_player_cards)->name, (ptr_to_player_cards)->manacost, (ptr_to_player_cards)->damage, (ptr_to_player_cards + 1)->name, (ptr_to_player_cards + 1)->manacost, (ptr_to_player_cards + 1)->damage, (ptr_to_player_cards + 2)->name, (ptr_to_player_cards + 2)->manacost, (ptr_to_player_cards + 2)->damage, (ptr_to_player_cards + 3)->name, (ptr_to_player_cards + 3)->manacost, (ptr_to_player_cards + 3)->damage);
             scanf("%d", &i);
             i--;
             if (i < 0 && i > 3)
@@ -171,8 +170,12 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
         ptr_to_bot->health = ptr_to_bot->health - (ptr_to_player_cards + i)->damage;
         ptr_to_player->mana = ptr_to_player->mana - (ptr_to_player_cards + i)->manacost;
     }
-    printf("you inflicted a damage of :%d\nremaining bot health : %d\n", 100-ptr_to_bot->health,ptr_to_bot->health);
+    printf("you inflicted a damage of :%d\nremaining bot health : %d\n", 100 - ptr_to_bot->health, ptr_to_bot->health);
     printf("how much mana is left for you  : %d\n", ptr_to_player->mana);
+    for (i = 0; i < 4; i++)
+    {
+        (ptr_to_player_cards + i)->isblocked = 0;
+    }
 
     if (ptr_to_bot->health < 1)
     {
@@ -182,10 +185,6 @@ int player_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct pla
     else
     {
         return 0;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        (ptr_to_player_cards + i)->isblocked = 0;
     }
 }
 int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player_cards *ptr_to_player_cards, struct bot_cards *ptr_to_bot_cards, int bot_element, struct bot_spells *ptr_to_bot_spells)
@@ -203,6 +202,10 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
     if (type == 2)
     {
         printf("choose the spell card u want to use");
+         for (i = 0; i < 1; i++)
+        {
+            printf(" %d - %s" , i ,((ptr_to_bot_spells + i)->name));
+        }
         scanf("%d", &i);
         i--;
         ((ptr_to_bot_spells + i)->spell)(ptr_to_player_cards, ptr_to_bot_cards, ptr_to_bot, ptr_to_player, who);
@@ -213,7 +216,7 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
         {
             // Add the printf statements to show cards
             //  printf("%d , %d \n" , ptr_to_bot->health , ptr_to_player ->mana);
-            printf("select the attack card u want to choose\n1.%s(mana cost=%d)(damage:%d)\n2.%s(mana cost=%d)(damage:%d)\n3.%s(mana cost=%d)(damage:%d)\n4.%s(mana cost=%d)(damage:%d)\n", (ptr_to_bot_cards)->name,(ptr_to_bot_cards)->manacost,(ptr_to_bot_cards)->damage, (ptr_to_bot_cards + 1)->name,(ptr_to_bot_cards+1)->manacost,(ptr_to_bot_cards+1)->damage,(ptr_to_bot_cards + 2)->name,(ptr_to_bot_cards+2)->manacost,(ptr_to_bot_cards+2)->damage,(ptr_to_bot_cards + 3)->name,(ptr_to_bot_cards+3)->manacost,(ptr_to_bot_cards+3)->damage);
+            printf("select the attack card u want to choose\n1.%s(mana cost=%d)(damage:%d)\n2.%s(mana cost=%d)(damage:%d)\n3.%s(mana cost=%d)(damage:%d)\n4.%s(mana cost=%d)(damage:%d)\n", (ptr_to_bot_cards)->name, (ptr_to_bot_cards)->manacost, (ptr_to_bot_cards)->damage, (ptr_to_bot_cards + 1)->name, (ptr_to_bot_cards + 1)->manacost, (ptr_to_bot_cards + 1)->damage, (ptr_to_bot_cards + 2)->name, (ptr_to_bot_cards + 2)->manacost, (ptr_to_bot_cards + 2)->damage, (ptr_to_bot_cards + 3)->name, (ptr_to_bot_cards + 3)->manacost, (ptr_to_bot_cards + 3)->damage);
             scanf("%d", &i);
             i--;
             if (i < 0 && i > 3)
@@ -245,8 +248,12 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
         ptr_to_player->health = ptr_to_player->health - (ptr_to_bot_cards + i)->damage;
         ptr_to_bot->mana = ptr_to_bot->mana - (ptr_to_bot_cards + i)->manacost;
     }
-    printf("the monster inflicted %d damage\nremaining player health : %d\n",100-ptr_to_player->health,ptr_to_player->health);
-    printf("monster has %d mana left\n",ptr_to_bot->mana);
+    printf("the monster inflicted %d damage\nremaining player health : %d\n", 100 - ptr_to_player->health, ptr_to_player->health);
+    printf("monster has %d mana left\n", ptr_to_bot->mana);
+    for (i = 0; i < 4; i++)
+    {
+        (ptr_to_bot_cards + i)->isblocked = 0;
+    }
 
     if (ptr_to_player->health < 1)
     {
@@ -256,10 +263,6 @@ int bot_turn(struct player *ptr_to_player, struct bot *ptr_to_bot, struct player
     else
     {
         return 0;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        (ptr_to_bot_cards + i)->isblocked = 0;
     }
 }
 void player_cards_assigning(struct cards *ptr_to_all_cards, struct player_cards *ptr_to_player_cards, char elements[4][10], int player_element, struct player_spells *ptr_to_player_spells, struct spells *ptr_to_all_spells)
@@ -392,7 +395,7 @@ void spell_card_making(struct spells *ptr_to_all_spells, ptr_to_spells spell_car
     for (i = 0; i < 4; i++)
     {
         (ptr_to_all_spells + i)->spell = spell_cards[i];
-        strcpy(ptr_to_all_spells->name, spell_names[i]);
+        strcpy((ptr_to_all_spells + i)->name, spell_names[i]);
     }
 }
 void level1()
@@ -457,7 +460,8 @@ void level3()
         printf("Asta: Your threats mean nothing to me, specter. Time for a showdown!\n");
     }
 }
-void finalLevel() {
+void finalLevel()
+{
     printf("After overcoming numerous trials and defeating formidable foes, you've finally collected the 2 Infinity Stones and 2 Forbidden Spell Cards.\n");
     printf("With a sense of accomplishment, you make your way back to Master Fushiguiro.\n");
     printf("Upon reaching the Master's quarters, a horrifying sight greets you. Master Fushiguiro has been secretly murdered!\n");
@@ -505,59 +509,72 @@ int main()
     struct bot *ptr_to_bot = &b1;
     b1.mana = 100;
     b1.health = 100;
-     i = 0;
+    i = 0;
     int points;
     level1();
-while (i == 0) // set the winning conditions here
-{
-    i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-    if (i == 1)
+    while (i == 0) // set the winning conditions here
     {
-        int points = 100; // Assuming you want to start with 100 points
-        upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
-        level2();
-        break;
+        i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+        if (i == 1)
+        {
+            int points = 100; // Assuming you want to start with 100 points
+            upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
+            level2();
+            i = 0;
+            while (i == 0) // set the winning conditions here
+            {
+                i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+                if (i == 1)
+                {
+                    int points = 100; // Assuming you want to start with 100 points
+                    upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
+                    level3();
+                    i = 0;
+                    while (i == 0) // set the winning conditions here
+                    {
+                        i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+                        if (i == 1)
+                        {
+                            finalLevel();
+                            i = 0;
+                            while (i == 0) // set the winning conditions here
+                            {
+                                i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
+                                if (i == 1)
+                                {
+                                    break;
+                                }
+                                i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+                                if (i == 1)
+                                {
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+                        if (i == 1)
+                        {
+                            break;
+                        }
+                    }
+                    break;
+                }
+                i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+                if (i == 1)
+                {
+                    break;
+                }
+            }
+            break;
+        }
+        i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
+        if (i == 1)
+        {
+            break;
+        }
     }
-    i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-    if (i == 1)
-    {
-        break;
-    }
-}
-i=0;
-while (i == 0) // set the winning conditions here
-{
-    i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-    if (i == 1)
-    {
-        int points = 100; // Assuming you want to start with 100 points
-        upgrade_attributes(ptr_to_player, ptr_to_player_cards, points);
-        level3();
-        break;
-    }
-    i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-    if (i == 1)
-    {
-        break;
-    }
-}
-i=0;
-while (i == 0) // set the winning conditions here
-{
-    i = player_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, player_element, ptr_to_player_spells);
-    if (i == 1)
-    {
-        finalLevel();
-        break;
-    }
-    i = bot_turn(ptr_to_player, ptr_to_bot, ptr_to_player_cards, ptr_to_bot_cards, bot_element, ptr_to_bot_spells);
-    if (i == 1)
-    {
-        break;
-    }
-}
     free(ptr_to_all_cards);
     free(ptr_to_player_cards);
     free(ptr_to_bot_cards);
-
 }
